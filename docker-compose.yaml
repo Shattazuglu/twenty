@@ -1,6 +1,6 @@
 services:
   server:
-    image: twentycrm/twenty:latest
+    image: ghcr.io/shattazuglu/twenty:latest
     ports:
       - "3000"
     environment:
@@ -27,7 +27,7 @@ services:
     restart: always
 
   worker:
-    image: twentycrm/twenty:latest
+    image: ghcr.io/shattazuglu/twenty:latest
     command: ["yarn", "worker:prod"]
     environment:
       NODE_ENV: production
