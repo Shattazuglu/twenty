@@ -1,21 +1,19 @@
 services:
   server:
-    build:
-      context: .
-      dockerfile: packages/twenty-docker/twenty/Dockerfile
+    image: twentycrm/twenty:latest
     ports:
       - "3000"
     environment:
       NODE_PORT: 3000
       PG_DATABASE_URL: postgres://postgres:postgres@db:5432/default
-      SERVER_URL: ${SERVER_URL:-http://localhost:3000}
-      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      SERVER_URL: https://crm.imperial-media.fr
+      REDIS_URL: redis://redis:6379
       DISABLE_DB_MIGRATIONS: "false"
       DISABLE_CRON_JOBS_REGISTRATION: "false"
-      STORAGE_TYPE: ${STORAGE_TYPE:-local}
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
-      FALLBACK_ENCRYPTION_KEY: ${FALLBACK_ENCRYPTION_KEY:-}
-      APP_SECRET: ${APP_SECRET:-}
+      STORAGE_TYPE: local
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      FALLBACK_ENCRYPTION_KEY: ${FALLBACK_ENCRYPTION_KEY}
+      APP_SECRET: ${APP_SECRET}
     volumes:
       - server-local-data:/app/packages/twenty-server/.local-storage
     depends_on:
@@ -26,20 +24,18 @@ services:
     restart: always
 
   worker:
-    build:
-      context: .
-      dockerfile: packages/twenty-docker/twenty/Dockerfile
+    image: twentycrm/twenty:latest
     command: ["yarn", "worker:prod"]
     environment:
       PG_DATABASE_URL: postgres://postgres:postgres@db:5432/default
-      SERVER_URL: ${SERVER_URL:-http://localhost:3000}
-      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      SERVER_URL: https://crm.imperial-media.fr
+      REDIS_URL: redis://redis:6379
       DISABLE_DB_MIGRATIONS: "true"
       DISABLE_CRON_JOBS_REGISTRATION: "true"
-      STORAGE_TYPE: ${STORAGE_TYPE:-local}
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
-      FALLBACK_ENCRYPTION_KEY: ${FALLBACK_ENCRYPTION_KEY:-}
-      APP_SECRET: ${APP_SECRET:-}
+      STORAGE_TYPE: local
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      FALLBACK_ENCRYPTION_KEY: ${FALLBACK_ENCRYPTION_KEY}
+      APP_SECRET: ${APP_SECRET}
     volumes:
       - server-local-data:/app/packages/twenty-server/.local-storage
     depends_on:
